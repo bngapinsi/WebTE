@@ -49,19 +49,18 @@
                 });
 
             const response = await fetch(request);
-            console.log(response);
+            console.log('response : ', response);
             return response.json();
         }
 
         function createTable() {
             let input = document.getElementById('filter').value; 
-
             if(staedtearr.length > 0)
             {
                 let tbody = document.getElementById('tbody');
                 tbody.innerHTML = '';
                 let nr = 1;
-                    for(let stadtObj of staedtearr) {
+                    for(let stadtObj of staedtearr) { // statt : of
                         console.log('stadt : ', stadtObj.stadt)
 
                         // hier muessen jetzt die einzelnen Zeilen in die Tabelle eingelesen werden
@@ -70,6 +69,15 @@
                         // Filtern: die Eingabe mit dem jeweiligen Gruendungsjahr bzw. der jeweiligen Stadt
                         // vergleichen (siehe z.B. substring(0, input.length) und toLowerCase())
                         // wenn match, dann entsprechende Zeile einfuegen; sonst nicht
+
+                        tbody.innerHTML += `<tr> 
+                                                <td>${nr}</td>
+                                                <td>${stadtObj.jahr}</td>
+                                                <td>${stadtObj.stadt}</td>
+                                                <td><a class="btn btn-success btn-sm" href="${stadtObj.link}">Info</a></td>
+                                                <td><img src="${stadtObj.bild}" alt="${stadtObj.stadt}" /></td>
+                                            </tr>`;
+                        nr++
                     }
             }
         }
@@ -77,9 +85,9 @@
         async function init() {
                     
             let bodyObj = await getStaedte()
-            console.log('responseObj', bodyObj)
+            console.log('responseObj', bodyObj) // { "staedte" : [ {}, {}, ..., {}] }
             staedtearr = await bodyObj.staedte;
-            console.log('staedtearr', staedtearr)
+            console.log('staedtearr', staedtearr) // [ {}, {}, ..., {} ]
             createTable()
         }
 
